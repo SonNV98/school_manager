@@ -1,0 +1,14 @@
+{% for plan_test in plan_test_list %}
+    {% if plan_test is not None %}
+        <tr>
+            <td class="text-center">{{ forloop.counter }}</td>
+            <td>
+                {{subject_name}}
+            </td>
+            <td>
+                {{plan_test.published}}
+            </td>
+        </tr>
+    {% endif %}
+
+{% endfor %}

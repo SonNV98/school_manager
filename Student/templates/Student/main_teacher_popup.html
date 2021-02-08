@@ -1,0 +1,119 @@
+{% load static %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'Student/css/dataTables.bootstrap4.min.css' %}?20200212">
+
+
+<!-- Latest compiled and minified CSS -->
+<style>
+    .modal-header .close{
+        margin: -2.5rem -1rem -1rem auto;
+    }
+    #dtBasic_paginate{
+            float:right;
+    }
+    .dataTables_length{
+        float: left;
+    }
+    #dtBasic_info{
+        float: left;
+    }
+
+</style>
+
+<input id="input_for_row_id" type="hidden" value="{{ rows }}">
+<div id="lbl"></div>
+<div class="modal-header">
+<h5 class="modal-title"><span style="font-size: 18px;font-weight: 600">Danh sách giáo viên chủ nhiệm</span></h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+  <span aria-hidden="true">&times;</span>
+</button>
+</div>
+
+<div class="modal-body">
+  <div class="table-responsive" style="overflow-x: initial">
+      <table id="dtBasic" class="table table-striped table-bordered" style="border: 1px solid #dee2e6 !important" >
+            <thead>
+                <tr class="text-center">
+                    <th ><span  class="text-left text-info ">STT</span></th>
+                    <th><span class="text-left text-info ">Tên giáo viên</span></th>
+                    <th><span class="text-left text-info ">Số điện thoại</span></th>
+                    <th><span class="text-left text-info ">Trình độ</span></th>
+                    <th><span class="text-left text-info ">Địa chỉ</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                {% for foo in user_lists %}
+                    <tr>
+                        <td style="line-height: 50px">{{ forloop.counter }}</td>
+                        <td class="fullName" style="line-height: 50px">
+                            <span class="fullName">{{ foo.user.first_name }} {{ foo.user.last_name }}</span>
+                        <span hidden class="userId">{{ foo.id }}</span>
+                        </td>
+                        <td style="line-height: 50px">
+                            {{ foo.number_phone|default_if_none:"" }}
+                        </td>
+                        <td style="line-height: 50px">
+                            {{ foo.certificate|default_if_none:""  }}
+                        </td>
+                        <td style="line-height: 50px">
+                            {{ foo.address|default_if_none:""  }}
+                        </td>
+                        <td>
+                            <button id="btn{{ forloop.counter }}" class="create-book btn btn-primary text-info" type="button" name="button" style="background: transparent;border: none;font-size: 15px;margin-top: .5rem">Chọn giáo viên</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+<script src="{% static 'Student/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'Student/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+<script type="text/javascript">
+    jQuery(function () {
+        jQuery('#dtBasic').DataTable();
+
+        {% comment %}date time picker{% endcomment %}
+        {% for user in user_lists %}
+
+            jQuery('#datetimepicker{{ forloop.counter }}').datetimepicker({
+                format: 'L'
+            });
+
+            jQuery('#datetimepicker{{ forloop.counter }}_{{ forloop.counter }}').datetimepicker({
+                format: 'LT'
+            });
+
+            jQuery("#btn{{ forloop.counter }}").on("click",function () {
+                var fullname = jQuery(this).closest("tr").find("td.fullName").find("span.fullName").text();
+                var userId = jQuery(this).closest("tr").find("td.fullName").find("span.userId").text();
+
+                var bool = confirm("Hiệu trưởng chắc chứ?");
+                if (bool) {
+                    jQuery(".{{ rows }}_4").remove();
+                    jQuery("#name_{{ rows }}_4").addClass("d-block");
+
+                    jQuery("#name_{{ rows }}_4_val").text(fullname);
+                    jQuery("#userId_{{ rows }}_4_val").text(userId);
+
+                    jQuery("#modal").remove();
+                    jQuery(".modal-backdrop").remove();
+                }else{
+                    alert("Thank you! đã thao tác!");
+                    jQuery("#modal").remove();
+                    jQuery(".modal-backdrop").remove();
+                }
+            });
+        {% endfor %}
+
+    });
+</script>

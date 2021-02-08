@@ -1,0 +1,148 @@
+{% extends 'Student/base.html' %}
+{% block title %}
+    <title>Học sinh trong lớp</title>
+{% endblock %}
+{% block script %}
+    <script>
+        var number_phone = 0;
+        var user_id = 0;
+        jQuery(function () {
+            jQuery("#login-button").click(function () {
+                var in4List = [];
+                jQuery(".in4Student  tbody  tr").each(function () {
+                    var data = []
+                    user_id = jQuery(this).find(" td ").eq(4).find('input[name="user_id"]').val();
+                    number_phone = jQuery(this).find(" td ").eq(4).find('input[name="number_phone"]').val();
+                    data.push(user_id+"-"+number_phone)
+                    in4List.push(data)
+                });
+                jQuery.ajax({
+                    url:'/Student/updateNumberPhone/',
+                    data:{
+                        'data':in4List
+                    },
+                    dataType:'json',
+                    success:function () {
+                        console.log("success")
+                    },
+
+                });
+            });
+            jQuery(document).ajaxStop(function(){
+                window.location.reload();
+            });
+        });
+    </script>
+{% endblock %}
+{% block stylesheet %}
+    <style>
+        footer.site-footer {
+            margin-top: 0 !important;
+        }
+        .divTitle{
+            float: left;
+            width: 100%;
+            padding-bottom: 1.5%;
+            border-bottom: 1px solid #d9d9d9
+        }
+        .box-title{
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .rowDuplex{
+            background-color: white;
+        }
+        .rowOpp{
+            background-color: #f5f5f5;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 ">
+        <div class="card">
+            <div class="card-body">
+                <div class="divTitle">
+                    <h2 class="box-title">Cập nhật thông tin số điện thoại của lớp</h2>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td>Họ và tên học sinh:</td>
+                                <td>{{ fullname }}</td>
+                            </tr>
+                            <tr>
+                                <td>Mã học sinh:</td>
+                                <td>{{ username }}</td>
+                            </tr>
+                            <tr>
+                                <td>Lớp:</td>
+                                <td>{{ className }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <p><strong>Chú ý: Chức năng này chỉ dành cho lớp trưởng!</strong></p>
+                    <p>Trong trường hợp lớp trưởng đăng ký sai thông tin điện thoại của thành viên trong lớp dẫn đến không nhận được tin nhắn mật khẩu, lớp trưởng sử dụng chức năng này để thay đổi thông tin số điện thoại.</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <button class="float-right" type="button" style="border-radius: 5px;background-color: #58C9F3;border: none;cursor: pointer;padding: 10px"  id="login-button" >Cập nhật</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered in4Student">
+                        <thead>
+                            <tr class="text-center">
+                                <th><span class="text-left text-info ">STT</span></th>
+                                <th><span class="text-left text-info ">Mã học sinh</span></th>
+                                <th><span class="text-left text-info ">Họ tên</span></th>
+                                <th><span class="text-left text-info ">Số ĐT trước</span></th>
+                                <th><span class="text-left text-info ">Số ĐT hiện tại</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for userClass in userClassLst %}
+                                {% for userGroup in  userGroupLst%}
+                                    {% if userClass.user_id == userGroup.id %}
+                                        <tr class="text-center">
+                                            <td>
+                                                <p class="text-dark">{{ forloop.counter }}</p>
+                                            </td>
+                                            <td>
+                                                <p class="text-dark">{{ userClass.user.username }}</p>
+                                            </td>
+                                            <td>
+                                                <p class="text-dark">{{ userClass.user.first_name}} {{ userClass.user.last_name }}</p>
+                                            </td>
+                                            <td>
+                                                <p class="text-dark">{{ userClass.number_phone|default_if_none:""  }}</p>
+                                            </td>
+                                            <td>
+                                                <input type="text" value="{{ userClass.number_phone|default_if_none:""  }}" name="number_phone" id="number_phone_id">
+                                                <input type="hidden" value="{{ userClass.user.id }}" name="user_id" id="user_id_id">
+                                            </td>
+
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /# column -->
+</div>
+{% endblock %}

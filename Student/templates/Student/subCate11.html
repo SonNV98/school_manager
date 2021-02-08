@@ -1,0 +1,71 @@
+{% extends 'Student/base.html' %}
+{% block title %}
+    <title>Học sinh trong lớp</title>
+{% endblock %}
+{% block stylesheet %}
+    <style>
+        footer.site-footer {
+            margin-top: 0 !important;
+        }
+        .divTitle{
+            float: left;
+            width: 100%;
+            padding-bottom: 1.5%;
+            border-bottom: 1px solid #d9d9d9
+        }
+        .box-title{
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .rowDuplex{
+            background-color: white;
+        }
+        .rowOpp{
+            background-color: #f5f5f5;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 ">
+        <div class="card">
+            <div class="card-body">
+                <div class="divTitle">
+                    <h2 class="box-title">Cập nhật thông tin số điện thoại của lớp</h2>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td>Họ và tên học sinh:</td>
+                                <td>{{ fullname }}</td>
+                            </tr>
+                            <tr>
+                                <td>Mã học sinh:</td>
+                                <td>{{ username }}</td>
+                            </tr>
+                            <tr>
+                                <td>Lớp:</td>
+                                <td>{{ className }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-body pt-0 mt-0 mb-0" >
+                <div class="divTitle"  style="background-color: #ea4335;border-radius: 5px;padding: 2.5%">
+                    <p style="font-size: 15px;color: white">Chú ý:</p>
+                    <p style="font-size: 15px;color: white">- Nếu chưa thanh toán các khoản phí dưới đây, Tài khoản sẽ bị Khóa một số chức năng.</p>
+                    <p style="font-size: 15px;color: white">- Nếu Số tiền chưa Thanh toán lớn hơn Số dư tài khoản, bạn phải bổ sung tiền vào tài khoản.</p>
+                    <p style="fosnt-size: 15px;color: white">- Từ học kỳ 1 năm học 2018 - 2019 học phí được tính theo công thức sau: Học phí = Hệ số tín chỉ x Hệ số chương trình	x Hệ số lớp học phần x Đơn giá</p>
+                    <p style="font-size: 15px;color: white">- Từ ngày 15/07/2019 sinh viên có thể nộp tiền học phí thông qua các cổng thanh toán như VÍ VIỆT (LIÊN VIỆT POST BANK) và VIETTEL PAY</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /# column -->
+</div>
+{% endblock %}

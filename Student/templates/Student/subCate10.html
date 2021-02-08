@@ -1,0 +1,154 @@
+{% extends 'Student/base.html' %}
+{% load static %}
+{% block title %}
+    <title>Thông báo từ nhà trường</title>
+{% endblock %}
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{% static 'tinymce/css/prism.css' %} ">
+    <style>
+
+        footer.site-footer {
+            margin-top: 0 !important;
+        }
+        .divTitle{
+            float: left;
+            width: 100%;
+            padding-bottom: 1.5%;
+            border-bottom: 1px solid #d9d9d9
+        }
+        .box-title{
+            font-weight: bold;
+            font-size: 18px;
+        }
+        #id_old_password{
+            margin-left: 125px;
+            padding: 3px 10px;
+            width: 57%;
+            border: 2px solid #DDD;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        #id_new_password2{
+            margin-left: 15px;
+            padding: 3px 10px;
+            width: 57%;
+            border: 2px solid #DDD;
+            border-radius: 5px;
+            margin-bottom: 15px
+        }
+        #id_new_password1{
+            margin-left: 117px;
+            padding: 3px 10px;
+            width: 57%;
+            border: 2px solid #DDD;
+            border-radius: 5px;
+        }
+        .helptext > ul > li {
+            display: inline-block;
+            color: yellowgreen;
+            margin-left: 13%;
+            font-style: italic;
+            font-size: 14px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 ">
+        <div class="card">
+            <div class="card-body">
+                <div class="divTitle">
+                    <h2 class="box-title">Nạp tiền vào tài </h2>
+                </div>
+            </div>
+            <div class="card-body pt-0 pb-0" >
+                <div class="divTitle"  style="background-color: #34a853;border-radius: 5px;padding: 2.5%">
+                    <p style="font-size: 15px;color: white">Chú ý:</p>
+                    <p style="font-size: 15px;color: white">- Để thuận tiện cho sinh viên thanh toán các khoản học phí, nhà trường triển khai hình thức nộp tiền qua các Cổng Thanh Toán</p>
+                    <p style="font-size: 15px;color: white">- Bạn có thể thực hiện nộp tiền qua các kênh như VÍ VIỆT (Liên Việt Post Bank) và VIETTEL PAY</p>
+                    <p style="fosnt-size: 15px;color: white">- Số tiền tối thiểu thực hiện giao dịch là 1.000 (vnđ)</p>
+                    <p style="font-size: 15px;color: white">- Số tiền bạn nộp sẽ được hạch toán vào cuối ngày</p>
+                    <p style="font-size: 15px;color: white">- Bạn cần đợi kết quả giao dịch trả về trước khi đóng màn hình này</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <tr>
+                        <td>Họ và tên: </td>
+                        <td><p class="m-0" style="color: orangered">{{ fullname }}</p></td>
+                    </tr>
+                    <tr>
+                        <td >Tên tài khoản: </td>
+                        <td><p class="m-0"  style="color: orangered">{{  username }}</p></td>
+                    </tr>
+                    <tr>
+                        <td >Số dư tài khoản: </td>
+                        <td><p class="m-0"  style="color: orangered">173.000(vnđ)</p></td>
+                    </tr>
+                    <tr>
+                        <td >Số tiền nợ: </td>
+                        <td><p class="m-0"  style="color: orangered">4.760.000(vnđ)</p></td>
+                    </tr>
+                    <tr>
+                        <td>Số tiền bạn phải nộp: </td>
+                        <td>
+                            <input type="text" value="4.760.000(VNĐ)">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="300px">Chọn cổng thanh toán: </td>
+                        <td>
+                            <div><input name="radio" class="mr-2" type="radio" value="">Ví việt (Liên Việt Post Bank)</div>
+                            <div><input name="radio" class="mr-2" type="radio" value="">Viettle Pay</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td ></td>
+                        <td>
+                            <button class="float-left" id="update_button" type="button" style="border-radius: 5px;background-color: #58C9F3;border: none;cursor: pointer;padding: 10px">Xác nhận nộp</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /# column -->
+</div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'tinymce/js/prism.js' %}"></script>
+    <script src="{% static 'tinymce/js/tinymce/utils/validate.js' %}"></script>
+    <script src="{% static 'tinymce/js/tinymce/tinymce.min.js' %}"></script>
+    <script>
+        {% comment %}jQuery(function () {
+            jQuery("#update_button").click(function () {
+                let data = {};
+
+                if (jQuery("#new_password").val() !== ""){
+                    data['new_password'] = jQuery("#new_password").val()
+                }
+                if (jQuery("#again_new_password").val() !== ""){
+                    data['again_new_password'] = jQuery("#again_new_password").val()
+                }
+
+                if (data['new_password'] !== data['again_new_password']){
+                    alert("Việc nhập lại mật khẩu mới không khớp!. Vui lòng nhập lại!")
+                }else{
+                    jQuery.ajax({
+                        url:'/Student/changePassword/',
+                        data:{
+                            'data':data
+                        },
+                        success:function () {
+                        }
+                    });
+                    jQuery(document).ajaxStop(function(){
+                        window.location.reload();
+                    });
+                }
+            });
+
+        });{% endcomment %}
+    </script>
+{% endblock %}

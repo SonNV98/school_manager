@@ -1,0 +1,92 @@
+{% extends 'Student/base.html' %}
+{% block title %}
+    <title>Học sinh trong lớp</title>
+{% endblock %}
+{% block stylesheet %}
+    <style>
+        footer.site-footer {
+            margin-top: 0 !important;
+        }
+        .divTitle{
+            float: left;
+            width: 100%;
+            padding-bottom: 1.5%;
+            border-bottom: 1px solid #d9d9d9
+        }
+        .box-title{
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .rowDuplex{
+            background-color: white;
+        }
+        .rowOpp{
+            background-color: #f5f5f5;
+        }
+        #test_score_id{
+            padding: 3px 10px;
+            width: 90%;
+            border: 2px solid #DDD;
+            border-radius: 5px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 ">
+        <div class="card">
+            <div class="card-body">
+                <div class="divTitle">
+                    <h2 class="box-title">Cập nhật điểm trên thi của học sinh của  {{ className | lower}}</h2>
+                </div>
+            </div>
+            <div class="card-body p-0 m-0">
+                <button type="submit" style="float:right;margin-right:1.25rem;border-radius: 5px;background-color: #58C9F3;border: none;cursor: pointer;padding: 10px">Cập nhật điểm</button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="text-center">
+                                <th><span class="text-left text-info ">STT</span></th>
+                                <th><span class="text-left text-info ">Mã học sinh</span></th>
+                                <th><span class="text-left text-info ">Họ tên</span></th>
+                                <th><span class="text-left text-info ">Điểm thi</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for userClass in userClassLst %}
+                                {% for userGroup in  userGroupLst%}
+                                    {% for userGroup2 in  userGroupLst2%}
+                                        {% for userGroup3 in  userGroupLst3%}
+                                            {% if userClass.user_id != userGroup.id and userClass.user_id != userGroup2.id and userClass.user_id != userGroup3.id %}
+                                                <tr class="text-center">
+                                                    <td>
+                                                        <p>{{ forloop.counter }}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{ userClass.user.username }}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>{{ userClass.user.first_name}} {{ userClass.user.last_name }}</p>
+                                                    </td>
+                                                    <td>
+                                                        <input class="text-center" type="text" placeholder="Điểm thi" id="test_score_id">
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /# column -->
+</div>
+{% endblock %}

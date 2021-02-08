@@ -1,0 +1,52 @@
+{% extends 'Student/base.html' %}
+{% load static %}
+{% block title %}
+    <title>Học sinh trong lớp</title>
+{% endblock %}
+{% block stylesheet %}
+    <style>
+        footer.site-footer {
+            margin-top: 0 !important;
+        }
+        .divTitle{
+            float: left;
+            width: 100%;
+            padding-bottom: 1.5%;
+            border-bottom: 1px solid #d9d9d9
+        }
+        .box-title{
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .rowDuplex{
+            background-color: white;
+        }
+        .rowOpp{
+            background-color: #f5f5f5;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 ">
+        <div class="card">
+            <div class="card-body">
+                <div class="divTitle">
+                    <h2 class="box-title mb-3">Chào mừng các bạn đến với phần hướng dẫn sử dụng phần mềm quản lý trường học trên nền tảng web!</h2>
+                    <h2 class="box-title mb-3">Được thiết kế và phát triển bởi một Java'Developer là Nguyễn Văn Sơn</h2>
+                    <h2 class="box-title mb-3">Hệ thống bạn đang sử dụng là hệ thống phía bên học sinh!</h2>
+                    <a class="" href="https://www.facebook.com/imkakarot" style="font-size: 13px;color: #03A9FA;font-family: American Typewriter">Liên hệ</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="divTitle">
+                    <img src="{% static 'Student/images/avatar/258c8822b6a11bdc8d0060bd9bb47df3.gif' %}" alt="">
+                    <img class="float-right" src="{% static 'Student/images/avatar/tenor.gif' %}" alt="" style="height: 480px;width: 300px">
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /# column -->
+</div>
+{% endblock %}

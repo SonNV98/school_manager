@@ -1,0 +1,136 @@
+{% extends 'Student/base.html' %}
+{% load static %}
+{% block title %}
+    <title>Thông báo cá nhân</title>
+{% endblock %}
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{% static 'tinymce/css/prism.css' %} ">
+    <style>
+        footer.site-footer {
+            margin-top: 0 !important;
+        }
+        .divTitle{
+            float: left;
+            width: 100%;
+            padding-bottom: 1.5%;
+            border-bottom: 1px solid #d9d9d9
+        }
+        .box-title{
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .rowDuplex{
+            background-color: white;
+        }
+        .rowOpp{
+            background-color: #f5f5f5;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 ">
+        <div class="card">
+            <div class="card-body">
+                <div class="divTitle">
+                    <h2 class="box-title">Danh sách thông báo</h2>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if page_obj2.has_other_pages %}
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            {% if page_obj2.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj2.previous_page_number }}">&laquo;</a></li>
+                            {% else %}
+                                <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+                            {% endif %}
+                            {% for i in page_obj2.paginator.page_range %}
+                              {% if page_obj2.number == i %}
+                                  <li class="active page-item"><span class="page-link" >{{ i }} <span class="sr-only">(current)</span></span></li>
+                              {% else %}
+                                  <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                              {% endif %}
+                            {% endfor %}
+                            {% if page_obj2.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj2.next_page_number }}">&raquo;</a></li>
+                            {% else %}
+                                <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="divTitle">
+                    {% if page_obj2  == "" %}
+                        <h4>Không tìm thấy dữ liệu!</h4>
+                    {% else %}
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th><span class="text-left text-info text-uppercase">stt</span></th>
+                                    <th><span class="text-left text-info text-uppercase">nội dung</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in page_obj2 %}
+                                    <tr class="{% cycle 'rowDuplex' 'rowOpp' %} text-justify ">
+                                        <td><span style="font-family: American Typewriter">{{ item.id }}</span></td>
+                                        <td>
+                                            {% if item.subject is not  None %}
+                                                <p class="font-weight-bold text-dark text-uppercase text-center" style="font-family: American Typewriter">{{ item.subject }}</p>
+                                            {% endif %}
+                                            {% if item.title is not  None %}
+                                                <p class="text-dark font-italic font-weight-normal text-center" style="font-family: American Typewriter">{{ item.title }}</p>
+                                            {% endif %}
+                                             <p class="text-dark text-justify" style="font-family: American Typewriter;font-size: 14px">Thời gian đăng: {{ item.published }}</p>
+                                                  {{ item.content | safe }}
+                                            {% if item.file is None or item.file != "" or item.file %}
+                                                <a class="" href="https://www.facebook.com/imkakarot" style="font-size: 13px;color: #03A9FA;font-family: American Typewriter">Xem chi tiết</a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                    {% if page_obj2.has_other_pages %}
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                {% if page_obj2.has_previous %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ page_obj2.previous_page_number }}">&laquo;</a></li>
+                                {% else %}
+                                    <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+                                {% endif %}
+                                {% for i in page_obj2.paginator.page_range %}
+                                  {% if page_obj2.number == i %}
+                                      <li class="active page-item"><span class="page-link" >{{ i }} <span class="sr-only">(current)</span></span></li>
+                                  {% else %}
+                                      <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                  {% endif %}
+                                {% endfor %}
+                                {% if page_obj2.has_next %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ page_obj2.next_page_number }}">&raquo;</a></li>
+                                {% else %}
+                                    <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /# column -->
+</div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'tinymce/js/prism.js' %}"></script>
+    <script src="{% static 'tinymce/js/tinymce/utils/validate.js' %}"></script>
+    <script src="{% static 'tinymce/js/tinymce/tinymce.min.js' %}"></script>
+{% endblock %}

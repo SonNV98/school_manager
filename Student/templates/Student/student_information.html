@@ -1,0 +1,75 @@
+<tbody>
+    <tr style="height: 55px">
+        <td >Quốc tịch</td>
+        <td>{{ studentUser.national|default_if_none:""  }}</td>
+    </tr>
+    <tr style="height: 55px">
+        <td >Xã phường (Hộ khẩu thường trú)</td>
+        <td>{{ studentUser.ward|default_if_none:""  }}</td>
+    </tr>
+    <tr style="height: 55px">
+        <td >Quận huyện (Hộ khẩu thường trú)</td>
+        <td>{{ studentUser.district|default_if_none:""  }}</td>
+    </tr>
+    <tr style="height: 55px">
+        <td width="330px" >Tỉnh thành phố (Hộ khẩu thường trú)</td>
+        <td>{{ studentUser.province|default_if_none:""  }}</td>
+    </tr>
+    <tr style="height: 55px">
+        <td >Dân tộc</td>
+        <td>{{ studentUser.folk|default_if_none:""  }}</td>
+    </tr>
+    <tr style="height: 55px">
+        <td >Tôn giáo</td>
+        <td>{{ studentUser.religion|default_if_none:""  }}</td>
+    </tr>
+    <tr style="height: 55px">
+        <td >Đối tượng ưu tiên</td>
+        <td>
+            {% if studentUser.priority_subject %}
+                <input type="checkbox" checked="checked" disabled>
+            {% else %}
+                <p>Không!</p>
+            {% endif %}
+        </td>
+    </tr>
+    <tr style="height: 55px">
+        <td >Đối tượng miễn giảm</td>
+        <td>
+            {% if studentUser.subject_of_reduction %}
+                <input type="checkbox" checked="checked" disabled>
+            {% else %}
+                <p>Không!</p>
+            {% endif %}
+        </td>
+    </tr>
+    <tr style="height: 55px">
+        <td >Số CMTND/CCCD</td>
+        <td>{{ studentUser.cmtnd|default_if_none:""  }}</td>
+    </tr>
+    <tr style="height: 79px">
+        <td >Ngày cấp</td>
+        <td>{{ studentUser.cmtnd_day_create|date:"SHORT_DATE_FORMAT"|default_if_none:""  }}</td>
+    </tr>
+    <tr style="height: 55px">
+        <td >Nơi cấp</td>
+        <td>{{ studentUser.cmnt_area|default_if_none:""  }}</td>
+    </tr>
+    <tr>
+        <td style="height: 55px">Tên ngân hàng (Nếu có)</td>
+        <td>{{ studentUser.bank_name|default_if_none:""  }}</td>
+    </tr>
+    <tr>
+        <td style="height: 55px">Số tài khoản (Nếu có)</td>
+        <td>{{ studentUser.bank_number|default_if_none:""  }}</td>
+    </tr>
+    <tr>
+        <td style="height: 55px">Mã số thẻ bảo hiểm y tế</td>
+        <td>{{ studentUser.code_of_health|default_if_none:""  }}</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <button class="float-right" id="update_button" type="button" style="border-radius: 5px;background-color: #58C9F3;border: none;cursor: pointer;padding: 10px">Gửi yêu cầu cập nhật</button>
+        </td>
+    </tr>
+</tbody>

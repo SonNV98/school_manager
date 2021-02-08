@@ -1,0 +1,126 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {% block title %}
+    {% endblock %}
+    <title>Trang học sinh</title>
+    <meta name="description" content="Ela Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'Student/css/bootstrap/bootstrap.min.css' %}?20200212">
+    <link rel="stylesheet" type="text/css" href="{% static 'Student/fonts/fontawesome-free-5.12.0-web/css/all.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Student/fonts/fontawesome-free-5.12.0-web/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Student/css/style.css' %}?20200215">
+    {% block stylesheet %}
+    {% endblock %}
+</head>
+
+<body>
+    <!-- Left Panel -->
+    <aside id="left-panel" class="left-panel">
+        <div class="scroll">
+            <nav class="navbar navbar-expand-sm navbar-default  scrollbar scroll" id="nav_scrollbar">
+                <div id="main-menu" class="main-menu collapse navbar-collapse">
+                    <ul class="nav navbar-nav ">
+                        <li class="menu-item-has-children li-title">
+                            <span>Tài khoản sinh viên</span>
+                        </li>
+                        <li class="active">
+                            <a href="{% url 'Student:home' %}"><i class="menu-icon fa fa-home"></i>Trang chủ </a>
+                        </li>
+                        {% if Category %}
+                            {% for item in Category %}
+                                {% if item.sub_category_flag == 1 %}
+                                    <li class="menu-item-has-children dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon {{item.icon}}"></i>{{item.category_name}}</a>
+                                        <ul class="sub-menu children dropdown-menu">
+                                            {% for itemSub in SubCategory %}
+                                                {% if item.id == itemSub.category_name_id %}
+                                                    <li><i class="menu-icon {{ itemSub.icon }}"></i><a id="subCate_{{ itemSub.id }}" href="{% url 'Student:subCategory'   itemSub.id %}">{{itemSub.sub_category_name}}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item">
+                                        <a href="#"> <i class="menu-icon fa fa-laptop"></i>{{item.category_name}}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </nav>
+        </div>
+    </aside>
+    <!-- /#left-panel -->
+    <!-- Right Panel -->
+    <div id="right-panel" class="right-panel">
+        <!-- Header-->
+        <header id="header" class="header">
+            <div class="top-left">
+                <div class="navbar-header">
+                    <a class="navbar-brand logos" href="{% url 'Student:home' %}"><i class="fa fa-graduation-cap logoNames" ></i></a>
+                    <span class="titleNames">Trường THPT Nguyễn Đăng Đạo</span>
+                    <a id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
+                </div>
+            </div>
+            <div class="top-right">
+                <div class="header-menu">
+                    <div class="user-area dropdown float-right users" >
+                        <span class="usernames" style="font-family: 'American Typewriter'">{{ fullname }}</span>
+                        <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="user-avatar rounded-circle" src="{% static 'Student/images/admin.jpg' %}" alt="User Avatar">
+                        </a>
+                        <div class="user-menu dropdown-menu">
+                            <a class="nav-link" href="#"><i class="fa fa -cog"></i>Settings</a>
+                            <a class="nav-link" href="{% url 'Student:logout' %}"><i class="fa fa-power -off"></i>Logout</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+        <!-- /#header -->
+        <!-- Content -->
+        <div class="content">
+            <div class="animated fadeIn">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+        <!-- /.content -->
+        <div class="clearfix"></div>
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-inner bg-white">
+                <div class="row">
+                    <div class="col-sm-6">
+                        Copyright &copy; 2020 Nguyễn Văn Sơn - USOL-V
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        Designed by <a href="https://www.facebook.com/imkakarot">Nguyễn Văn Sơn</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- /.site-footer -->
+    </div>
+    <!-- /#right-panel -->
+
+    <!-- Scripts -->
+    <script src="{% static 'Student/js/jquery.min.js' %}?20200213"></script>
+    <script src="{% static 'Student/js/popper.min.js' %}"></script>
+    <script src="{% static 'Student/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'Student/js/jquery.matchHeight.min.js' %}"></script>
+    <script src="{% static 'Student/js/main.js' %}"></script>
+    {% block script %}
+    {% endblock %}
+</body>
+
+</html>

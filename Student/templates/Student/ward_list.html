@@ -1,0 +1,4 @@
+<option value="0">== Chọn xã phường ==</option>
+{% for item in ward_list %}
+    <option value="{{ item.ward_id }}">{{ item.name }}</option>
+{% endfor %}

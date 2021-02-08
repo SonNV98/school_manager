@@ -1,0 +1,659 @@
+{% extends 'Student/base.html' %}
+{% load static %}
+{% block title %}
+    <title>Học sinh trong lớp</title>
+{% endblock %}
+{% block  script %}
+{#    <script src="{% static 'Student/js/jquery-3.3.1.slim.min.js' %}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>#}
+
+    <!-- Moment.js -->
+    <script src="{% static 'Student/js/moment.min.js' %}" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
+
+    <!-- Tempus Dominus Bootstrap 4 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        jQuery(function () {
+            let province = "";
+            let data = {};
+            {% comment %}date time picker{% endcomment %}
+            jQuery('#datetimepicker4').datetimepicker({
+                format: 'L'
+            });
+
+            {% comment %}load district{% endcomment %}
+            jQuery("#province_list_id").change(function () {
+                jQuery.ajax({
+                    url:'/Student/loadDistrict/',
+                    data:{
+                        'province':jQuery(this).val()
+                    },
+                    success: function (data) {
+                        jQuery("#district_list_id").html(data);
+                    }
+                });
+            });
+
+            {% comment %}load ward{% endcomment %}
+            jQuery("#district_list_id").change(function () {
+                jQuery.ajax({
+                    url:'/Student/loadWard/',
+                    data:{
+                        'district':jQuery(this).val()
+                    },
+                    success: function (data) {
+                        jQuery("#ward_list_id").html(data);
+                    }
+                });
+            });
+
+            {% comment %}update student'informations{% endcomment %}
+            jQuery("#update_button").click(function () {
+
+                if (jQuery("#national_list_id").val() !== "0"){
+                    data['national'] = jQuery("#national_list_id option:selected").text()
+                }
+                if (jQuery("#folk_list_id").val() !== "0"){
+                    data['folk'] = jQuery("#folk_list_id option:selected").text()
+                }
+                if (jQuery("#religion_list_id").val() !== "0"){
+                    data['religion'] = jQuery("#religion_list_id option:selected").text()
+                }
+                if (jQuery("#priority_subject_list_id").val() !== "0"){
+                    data['priority_subject'] = jQuery("#priority_subject_list_id option:selected").text()
+                }
+                if (jQuery("#subject_of_reduction_list_id").val() !== "0"){
+                    data['subject_of_reduction'] = jQuery("#subject_of_reduction_list_id option:selected").text()
+                }
+                if (jQuery("#bank_list_id").val() !== "0"){
+                    data['bank_name'] = jQuery("#bank_list_id option:selected").text()
+                }
+                if (jQuery("#province_list_id").val() !== "0"){
+                    data['province'] = jQuery("#province_list_id").val()
+                }
+                if (jQuery("#district_list_id").val() !== "0"){
+                    data['district'] = jQuery("#district_list_id").val()
+                }
+                if (jQuery("#ward_list_id").val() !== "0"){
+                    data['ward'] = jQuery("#ward_list_id").val()
+                }
+                if (jQuery("#area_list_id").val() !== "0"){
+                    data['cmnt_area'] = jQuery("#area_list_id option:selected").text()
+                }
+                if (jQuery(".datetimepicker-input").val() !== ""){
+                    data['cmtnd_day_create'] = jQuery("#datetimepicker4").data("datetimepicker").valueOf()._datesFormatted[0]
+                }
+                if (jQuery("#bank_number_id").val() !== ""){
+                    data['bank_number'] = jQuery("#bank_number_id").val()
+                }
+                if (jQuery("#health_code_id").val() !== ""){
+                    data['code_of_health'] = jQuery("#health_code_id").val()
+                }
+                if (jQuery("#cmtnd_id").val() !== ""){
+                    data['cmtnd'] = jQuery("#cmtnd_id").val()
+                }
+                jQuery.ajax({
+                    url:'/Student/updateStudentIn4/',
+                    data:{
+                        'data': data
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        jQuery("#student_information").html(data);
+                    }
+                });
+                jQuery(document).ajaxStop(function(){
+                    window.location.reload();
+                });
+            });
+
+
+            {% comment %}update family'informations{% endcomment %}
+            jQuery("#update_button_in4_family").click(function () {
+
+                if (jQuery("#dad_name").val() !== ""){
+                    data['dad_name'] = jQuery("#dad_name").val()
+                }
+                if (jQuery("#dad_birthday").val() !== ""){
+                    data['dad_birthday'] = jQuery("#dad_birthday").val()
+                }
+                if (jQuery("#dad_number_phone").val() !== ""){
+                    data['dad_number_phone'] = jQuery("#dad_number_phone").val()
+                }
+                if (jQuery("#dad_job").val() !== ""){
+                    data['dad_job'] = jQuery("#dad_job").val()
+                }
+                if (jQuery("#dad_address").val() !== ""){
+                    data['dad_address'] = jQuery("#dad_address").val()
+                }
+
+                if (jQuery("#mom_name").val() !== ""){
+                    data['mom_name'] = jQuery("#mom_name").val()
+                }
+                if (jQuery("#mom_birthday").val() !== ""){
+                    data['mom_birthday'] = jQuery("#mom_birthday").val()
+                }
+                if (jQuery("#mom_number_phone").val() !== ""){
+                    data['mom_number_phone'] = jQuery("#mom_number_phone").val()
+                }
+                if (jQuery("#mom_job").val() !== ""){
+                    data['mom_job'] = jQuery("#mom_job").val()
+                }
+                if (jQuery("#mom_address").val() !== ""){
+                    data['mom_address'] = jQuery("#mom_address").val()
+                }
+
+                if (jQuery("#tutor_name").val() !== ""){
+                    data['tutor_name'] = jQuery("#tutor_name").val()
+                }
+                if (jQuery("#tutor_birthday").val() !== ""){
+                    data['tutor_birthday'] = jQuery("#tutor_birthday").val()
+                }
+                if (jQuery("#tutor_number_phone").val() !== ""){
+                    data['tutor_number_phone'] = jQuery("#tutor_number_phone").val()
+                }
+                if (jQuery("#tutor_job").val() !== ""){
+                    data['tutor_job'] = jQuery("#tutor_job").val()
+                }
+                if (jQuery("#tutor_address").val() !== ""){
+                    data['tutor_address'] = jQuery("#tutor_address").val()
+                }
+
+                if (jQuery("#wife_husband_name").val() !== ""){
+                    data['wife_husband_name'] = jQuery("#wife_husband_name").val()
+                }
+                if (jQuery("#wife_husband_birthday").val() !== ""){
+                    data['wife_husband_birthday'] = jQuery("#wife_husband_birthday").val()
+                }
+                if (jQuery("#wife_husband_number_phone").val() !== ""){
+                    data['wife_husband_number_phone'] = jQuery("#wife_husband_number_phone").val()
+                }
+                if (jQuery("#wife_husband_job").val() !== ""){
+                    data['wife_husband_job'] = jQuery("#wife_husband_job").val()
+                }
+                if (jQuery("#wife_husband_address").val() !== ""){
+                    data['wife_husband_address'] = jQuery("#wife_husband_address").val()
+                }
+
+                if (jQuery("#son_daughter").val() !== ""){
+                    data['my_son_daughter'] = jQuery("#son_daughter").val()
+                }
+                if (jQuery("#sis_bro").val() !== ""){
+                    data['sis_bro'] = jQuery("#sis_bro").val()
+                }
+
+                jQuery.ajax({
+                    url:'/Student/updateStudentIn4/',
+                    data:{
+                        'data': data
+                    },
+                    success: function () {
+                    }
+                });
+                jQuery(document).ajaxStop(function(){
+                    window.location.reload();
+                });
+            });
+
+            {% comment %}update family'informations{% endcomment %}
+            jQuery("#update_button_in4_contact").click(function () {
+
+                if (jQuery("#stay_now_id").val() !== ""){
+                    data['stay_now'] = jQuery("#stay_now_id").val()
+                }
+                if (jQuery("#number_phone").val() !== ""){
+                    data['number_phone'] = jQuery("#number_phone").val()
+                }
+                if (jQuery("#email").val() !== ""){
+                    data['email'] = jQuery("#email").val()
+                }
+
+                jQuery.ajax({
+                    url:'/Student/updateStudentIn4/',
+                    data:{
+                        'data': data
+                    },
+                    success: function () {
+                    }
+                });
+                jQuery(document).ajaxStop(function(){
+                    window.location.reload();
+                });
+            });
+
+            {% comment %}button back{% endcomment %}
+            jQuery("#back_button").click(function () {
+                    window.location.reload();
+            })
+        });
+    </script>
+{% endblock %}
+{% block stylesheet %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
+    <style>
+        footer.site-footer {
+            margin-top: 0 !important;
+        }
+        .divTitle{
+            float: left;
+            width: 100%;
+            padding-bottom: 1.5%;
+            border-bottom: 1px solid #d9d9d9
+        }
+        .box-title{
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .rowDuplex{
+            background-color: white;
+        }
+        .rowOpp{
+            background-color: #f5f5f5;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 ">
+        <div class="card" style="border-top: none;background-color: #f1f2f7">
+            <div class="card-body" style="background-color: white;border-radius: 5px">
+                <div class="float-left m-0 p-0 w-100" style="background-color:white;border-radius: 100%; ">
+                    <img class="user-avatar rounded-circle" style="margin-top: -40px;border: 4px solid white;width: 110px" src="{% static 'Student/images/admin.jpg' %}" alt="User Avatar">
+                </div>
+                <div class="float-left">
+                    <p class="m-0">Mã giáo viên</p>
+                    <p>{{username}}</p>
+                </div>
+                <div class="float-left" style="margin-top: -6%;margin-left: 4%">
+                    <p class="m-0">Tên giáo viên</p>
+                    <p>{{fullname}}</p>
+                </div>
+                <div class="float-left" style="display:block;margin-left: 30%">
+                    <p class="m-0">Chuyên môn</p>
+                    <p>{{ technique.subject_name }}</p>
+                </div>
+                <div class="float-left" style="display:block;margin-left: 14%">
+                    <p class="m-0">Đang dạy lớp</p>
+                    <p>{{className}}</p>
+                </div>
+                <div class="float-right" style="width: 25%">
+                    <img class="user-avatar" style="margin-top: -8%;width: 282px;height: 170px;position: absolute" src="{% static 'Student/images/avatar/1522942231_208598.gif' %}" alt="User Avatar">
+                </div>
+            </div>
+            <div class="card-body p-0" style="margin-top: 3%">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist" style="height: 44px;background-color: white;border-radius: 4px">
+                    <li class="nav-item" style="padding: 0px 15px">
+                        <a class="nav-link active" style="height: 98%;line-height: 33px;font-size: 15px" data-toggle="tab" href="#home">Thông tin cá nhân</a>
+                    </li>
+                    <li class="nav-item" style="padding: 0px 15px">
+                        <a class="nav-link" style="height: 98%;line-height: 33px;font-size: 15px" data-toggle="tab" href="#menu1">Thông tin gia đình</a>
+                    </li>
+                    <li class="nav-item" style="padding: 0px 15px">
+                        <a class="nav-link" style="height: 98%;line-height: 33px;font-size: 15px" data-toggle="tab" href="#menu2">Liên hệ</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content" style="margin-top: 2%">
+                    <div id="home" class="container tab-pane active p-0">
+                        <div class="float-left" style="width: 60%;background-color: white;border-radius: 5px">
+                            <h4 class="font-weight-bold" style="margin: 2.5%">THÔNG TIN GÁO VIÊN</h4>
+                            <table id="student_information" class="table ml-1" style="width: calc(100% - .6rem);font-size: 15px">
+                                <tbody>
+                                    <tr style="height: 55px">
+                                        <td >Quốc tịch</td>
+                                        <td>{{ studentUser.national|default_if_none:""  }}</td>
+                                    </tr>
+                                    <tr style="height: 55px">
+                                        <td >Xã phường (Hộ khẩu thường trú)</td>
+                                        <td>{{ studentUser.ward|default_if_none:""  }}</td>
+                                    </tr>
+                                    <tr style="height: 55px">
+                                        <td >Quận huyện (Hộ khẩu thường trú)</td>
+                                        <td>{{ studentUser.district|default_if_none:""  }}</td>
+                                    </tr>
+                                    <tr style="height: 55px">
+                                        <td width="330px" >Tỉnh thành phố (Hộ khẩu thường trú)</td>
+                                        <td>{{ studentUser.province|default_if_none:""  }}</td>
+                                    </tr>
+                                    <tr style="height: 55px">
+                                        <td >Dân tộc</td>
+                                        <td>{{ studentUser.folk|default_if_none:""  }}</td>
+                                    </tr>
+                                    <tr style="height: 55px">
+                                        <td >Tôn giáo</td>
+                                        <td>{{ studentUser.religion|default_if_none:""  }}</td>
+                                    </tr>
+                                    <tr style="height: 55px">
+                                        <td >Số CMTND/CCCD</td>
+                                        <td>{{ studentUser.cmtnd|default_if_none:""  }}</td>
+                                    </tr>
+                                    <tr style="height: 79px">
+                                        <td >Ngày cấp</td>
+                                        <td>{{ studentUser.cmtnd_day_create|date:"SHORT_DATE_FORMAT"|default_if_none:""  }}</td>
+                                    </tr>
+                                    <tr style="height: 55px">
+                                        <td >Nơi cấp</td>
+                                        <td>{{ studentUser.cmnt_area|default_if_none:""  }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 55px">Tên ngân hàng (Nếu có)</td>
+                                        <td>{{ studentUser.bank_name|default_if_none:""  }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 55px">Số tài khoản (Nếu có)</td>
+                                        <td>{{ studentUser.bank_number|default_if_none:""  }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 55px">Mã số thẻ bảo hiểm y tế</td>
+                                        <td>{{ studentUser.code_of_health|default_if_none:""  }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <button class="float-right" id="update_button" type="button" style="border-radius: 5px;background-color: #58C9F3;border: none;cursor: pointer;padding: 10px">Gửi yêu cầu cập nhật</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="float-right" style="width: 39.7%;background-color: white;border-radius: 5px">
+                            <h4 class="font-weight-bold" style="margin: 3.7%">BẢNG CẬP NHẬT</h4>
+                            <table class="table ml-1" style="width: calc(100% - .6rem);font-size: 14px">
+                                <tbody>
+                                    <tr>
+                                        <td>Quốc tịch</td>
+                                        <td>
+                                            <select name="national_list" id="national_list_id" class="form-control" style="height: 30px">
+                                                <option value="0">== Chọn quốc tịch ==</option>
+                                                <option value="1">Việt Nam</option>
+                                                <option value="2">Hàn Quốc</option>
+                                                <option value="3">Trung Quốc</option>
+                                                <option value="4">Mỹ</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tỉnh/TP (HKTT)<i class="fa fa-star color-red ml-1" style="font-size: 12px"></i></td>
+                                        <td>
+                                            <select name="province_list" id="province_list_id" class="form-control" style="height: 30px">
+                                                <option value="0">== Chọn tỉnh/tp ==</option>
+                                                {% for item in province_list %}
+                                                    <option value="{{ item.province_id }}">{{ item.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Quận huyện (HKTT)<i class="fa fa-star color-red ml-1" style="font-size: 12px"></i></td>
+                                        <td>
+                                            <select name="district_list" id="district_list_id" class="form-control" style="height: 30px">
+                                                <option value="0">== Chọn quận huyện ==</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Xã phường (HKTT)<i class="fa fa-star color-red ml-1" style="font-size: 12px"></i></td>
+                                        <td>
+                                            <select name="ward_list" id="ward_list_id" class="form-control" style="height: 30px">
+                                                <option value="0">== Chọn xã phường ==</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dân tộc</td>
+                                        <td>
+                                            <select name="folk_list" id="folk_list_id" class="form-control" style="height: 30px">
+                                                <option value="0">== Chọn dân tộc ==</option>
+                                                <option value="1">Kinh</option>
+                                                <option value="2">Tày</option>
+                                                <option value="3">Hơ Mông</option>
+                                                <option value="4">Mường</option>
+                                                <option value="4">Khơ me</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tôn giáo</td>
+                                        <td>
+                                            <select name="religion_list" id="religion_list_id" class="form-control" style="height: 30px">
+                                                <option value="0">== Chọn tôn giáo ==</option>
+                                                <option value="1">Phật</option>
+                                                <option value="2">Kitô giáo</option>
+                                                <option value="3">Công giáo</option>
+                                                <option value="4">Hồi giáo</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr hidden>
+                                        <td>ĐTƯT</td>
+                                        <td>
+                                            <select  name="priority_subject_list" id="priority_subject_list_id" class="form-control" style="height: 30px">
+                                                <option value="0">== Chọn đối tượng ưu tiên ==</option>
+                                                <option value="1">Hộ nghèo</option>
+                                                <option value="2">Con thương binh/liệt sỹ</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr hidden>
+                                        <td>ĐTMG</td>
+                                        <td>
+                                            <select  name="subject_of_reduction_list" id="subject_of_reduction_list_id" class="form-control" style="height: 30px">
+                                                <option value="0">== Chọn đối tưỡng miễn giảm ==</option>
+                                                <option value="1">Hộ nghèo</option>
+                                                <option value="2">Con thương binh/liệt sỹ</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Số CMTND/CCCD</td>
+                                        <td>
+                                            <input id="cmtnd_id" class="form-control" type="text" placeholder="Nhập số CMTND/CCCD" style="height: 30px;font-size: 15px;padding: 6px 10px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td  style="height: 47px">Ngày cấp</td>
+                                        <td>
+                                            <div class="form-group">
+                                                <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                                                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker4"/>
+                                                    <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >Nơi cấp</td>
+                                        <td>
+                                            <select name="area_list" id="area_list_id" class="form-control" style="height: 30px">
+                                                <option value="0">== Chọn nơi cấp ==</option>
+                                                {% for item in province_list %}
+                                                    <option value="{{ item.province_id }}">{{ item.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tên ngân hàng</td>
+                                        <td>
+                                            <select name="bank_list" id="bank_list_id" class="form-control" style="height: 30px">
+                                                <option value="0">== Chọn ngân hàng ==</option>
+                                                <option value="1">VietcomBank</option>
+                                                <option value="2">LienvietBank</option>
+                                                <option value="3">Vietinbank</option>
+                                                <option value="4">TechcomBank</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Số tài khoản ngân hàng</td>
+                                        <td>
+                                            <input id="bank_number_id" class="form-control" type="text" placeholder="Nhập số tài khoản ngân hàng" style="height:30px;font-size: 15px;padding: 6px 10px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mã số thẻ BH y tế</td>
+                                        <td>
+                                            <input id="health_code_id" class="form-control" type="text" placeholder="VD: HS4012720599697" style="height:30px;font-size: 15px;padding: 6px 10px">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <button class="float-left" id="back_button" type="button" style="border-radius: 5px;background-color: #58C9F3;border: none;cursor: pointer;padding: 10px">Quay lại</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="menu1" class="container tab-pane fade p-0" style="margin-top: -2%">
+                        <div class="float-lef w-100" style="background-color: white;border-radius: 5px">
+                            <h4 class="font-weight-bold" style="margin: 3.7%;margin-left: 2%;margin-bottom: 2%;padding-top: 2%">THÔNG TIN GIA ĐÌNH</h4>
+                            <div class="row col-md-12 ml-1 p-0" style=";font-size: 14px">
+                                <div class="col-md-2">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Họ tên cha đẻ</p>
+                                    <input id="dad_name" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.dad_name|default_if_none:""  }}">
+                                </div>
+                                <div class="col-md-1 p-0">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Năm sinh</p>
+                                    <input id="dad_birthday" class="form-control" type="text" style="height:30px;font-size: 12px;padding: 6px 10px" value="{{ studentUser.dad_birthday|date:"Y-m-d"|default_if_none:""  }}">
+                                </div>
+                                <div class=" col-md-2">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Điện thoại</p>
+                                    <input id="dad_number_phone" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.dad_number_phone|default_if_none:""  }}">
+                                </div>
+                                <div class=" col-md-2">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Nghề nghiệp</p>
+                                    <input id="dad_job" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.dad_job|default_if_none:""  }}">
+                                </div>
+                                <div class=" col-md-5 pr-4">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Địa chỉ liên hệ</p>
+                                    <input id="dad_address" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.dad_address|default_if_none:""  }}">
+                                </div>
+                            </div>
+                            <div class="row col-md-12 ml-1 p-0 mt-3" style=";font-size: 14px">
+                                <div class="col-md-2">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Họ tên mẹ đẻ</p>
+                                    <input id="mom_name" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.mom_name|default_if_none:""  }}">
+                                </div>
+                                <div class="col-md-1 p-0">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Năm sinh</p>
+                                    <input id="mom_birthday" class="form-control" type="text" style="height:30px;font-size: 12px;padding: 6px 10px" value="{{ studentUser.mom_birthday|date:"Y-m-d" |default_if_none:""  }}">
+                                </div>
+                                <div class=" col-md-2">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Điện thoại</p>
+                                    <input id="mom_number_phone" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.mom_number_phone|default_if_none:""  }}">
+                                </div>
+                                <div class=" col-md-2">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Nghề nghiệp</p>
+                                    <input id="mom_job" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.mom_job|default_if_none:""  }}">
+                                </div>
+                                <div class=" col-md-5 pr-4">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Địa chỉ liên hệ</p>
+                                    <input id="mom_address" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.dad_address|default_if_none:""  }}">
+                                </div>
+                            </div>
+                            <div class="row col-md-12 ml-1 p-0 mt-3" style=";font-size: 14px">
+                                <div class="col-md-3">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Họ tên người giám hộ (Nếu có)</p>
+                                    <input id="tutor_name" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.wife_husband_name|default_if_none:""  }}">
+                                </div>
+                                <div class="col-md-1 p-0">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Năm sinh</p>
+                                    <input id="tutor_birthday" class="form-control" type="text" style="height:30px;font-size: 12px;padding: 6px 10px" value="{{ studentUser.wife_husband_birthday|date:"Y-m-d"|default_if_none:""  }}">
+                                </div>
+                                <div class=" col-md-2">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Điện thoại</p>
+                                    <input id="tutor_number_phone" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.wife_husband_number_phone|default_if_none:""  }}">
+                                </div>
+                                <div class=" col-md-2">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Nghề nghiệp</p>
+                                    <input id="tutor_job" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.wife_husband_job|default_if_none:""  }}">
+                                </div>
+                                <div class=" col-md-4 pr-4">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Địa chỉ liên hệ</p>
+                                    <input id="tutor_address" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.wife_husband_address|default_if_none:""  }}">
+                                </div>
+                            </div>
+                            <div class="row col-md-12 ml-1 p-0 mt-3" style=";font-size: 14px">
+                                <div class="col-md-3">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Họ tên vợ hoặc chồng (Nếu có)</p>
+                                    <input id="wife_husband_name" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.tutor_name|default_if_none:""  }}">
+                                </div>
+                                <div class="col-md-1 p-0">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Năm sinh</p>
+                                    <input id="wife_husband_birthday" class="form-control" type="text" style="height:30px;font-size: 12px;padding: 6px 10px" value="{{ studentUser.tutor_birthday|date:"Y-m-d"|default_if_none:""  }}">
+                                </div>
+                                <div class=" col-md-2">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Điện thoại</p>
+                                    <input id="wife_husband_number_phone" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.tutor_number_phone|default_if_none:""  }}">
+                                </div>
+                                <div class=" col-md-2">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Nghề nghiệp</p>
+                                    <input id="wife_husband_job" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.tutor_job|default_if_none:""  }}">
+                                </div>
+                                <div class=" col-md-4 pr-4">
+                                    <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Địa chỉ liên hệ</p>
+                                    <input id="wife_husband_address" class="form-control" type="text" style="height:30px;font-size: 15px;padding: 6px 10px" value="{{ studentUser.tutor_address|default_if_none:""  }}">
+                                </div>
+                            </div>
+                            <div class="row col-md-12 p-0 mt-3" style="font-size: 14px;margin-left: 1.8%;width: 96.3%">
+                                <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Họ tên con/Năm sinh (Nếu có)</p>
+                                <input id="son_daughter" class="form-control" type="text" style="height:48px;font-size: 15px;padding: 6px 10px" placeholder="Con trai:Nguyễn Văn A - Năm sinh: 2019" value="{{ studentUser.my_son_daughter|default_if_none:"" }}">
+                            </div>
+                            <div class="row col-md-12 p-0 mt-3" style="font-size: 14px;margin-left: 1.8%;width: 96.3%">
+                                <p class="m-0 mb-1" style="font-size: 13px;font-weight: 600">Anh chị em ruột (Nếu có)</p>
+                                <input id="sis_bro" class="form-control" type="text" style="height:48px;font-size: 15px;padding: 6px 10px" placeholder="Anh trai:Nguyễn Văn A - Năm sinh: 2019" value="{{ studentUser.sis_bro|default_if_none:""  }}">
+                            </div>
+                            <div class="row col-md-12 p-0 mt-3" style="margin-left: 1.8%">
+                                <button class="float-left mb-4" id="update_button_in4_family" type="button" style="border-radius: 5px;background-color: #58C9F3;border: none;cursor: pointer;padding: 10px">Cập nhật thông tin gia đình</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu2" class="container tab-pane fade p-0" style="margin-top: -2%">
+                        <div class="float-lef w-100" style="background-color: white;border-radius: 5px">
+                            <h4 class="font-weight-bold" style="margin: 3.7%;margin-left: 2%;margin-bottom: 2%;padding-top: 2%">LIÊN HỆ HỌC SINH</h4>
+                            <table class="table ml-1" style="width: calc(100% - .6rem);font-size: 14px">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <label class="m-0 p-0 float-right" style="line-height: 54px">Nơi ở hiện tại</label>
+                                        </td>
+                                        <td>
+                                            <textarea name="stay_now" id="stay_now_id" style="width: 100%;height: 48px" >{{ studentUser.stay_now|default_if_none:""  }}</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-25">
+                                            <label class="m-0 p-0 float-right" style="line-height: 33px">Số điện thoại của học sinh</label>
+                                        </td>
+                                        <td>
+                                            <input id="number_phone" type="text" style="margin-top: 6px;width: 100%" value="{{ studentUser.number_phone|default_if_none:""  }}">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label class="m-0 p-0 float-right" style="line-height: 33px">Email của học sinh</label>
+                                        </td>
+                                        <td>
+                                            <input id="email" type="email" style="margin-top: 6px;width: 100%" value="{{ studentUser.user.email|default_if_none:""  }}">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <button class="float-left" id="update_button_in4_contact" type="button" style="border-radius: 5px;background-color: #58C9F3;border: none;cursor: pointer;padding: 10px">Cập nhật thông tin liên hệ</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /# column -->
+</div>
+{% endblock %}

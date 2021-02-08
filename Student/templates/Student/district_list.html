@@ -1,0 +1,4 @@
+<option value="0">== Chọn quận huyện ==</option>
+{% for item in district_list %}
+    <option value="{{ item.district_id }}">{{ item.name }}</option>
+{% endfor %}

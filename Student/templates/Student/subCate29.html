@@ -1,0 +1,105 @@
+{% extends 'Student/base.html' %}
+{% load static %}
+{% block title %}
+    <title>Học sinh trong lớp</title>
+{% endblock %}
+{% block script %}
+    <script>
+        var content = "";
+        jQuery(function () {
+            jQuery("#textAreaContent").change(function () {
+                content = jQuery("#textAreaContent").val()
+            })
+            jQuery("#login-button").click(function () {
+                console.log(content)
+                jQuery.ajax({
+                    url:'/Student/insertShareNewsForClass/',
+                    data:{
+                        'data':content
+                    },
+                    dataType:'json',
+                    success:function () {
+                        console.log("success")
+                    },
+                });
+            });
+            jQuery(document).ajaxStop(function(){
+                window.location.reload();
+            });
+        });
+    </script>
+{% endblock %}
+{% block stylesheet %}
+    <style>
+        footer.site-footer {
+            margin-top: 0 !important;
+        }
+        .divTitle{
+            float: left;
+            width: 100%;
+            padding-bottom: 1.5%;
+            border-bottom: 1px solid #d9d9d9
+        }
+        .pCustomize{
+            font-size: 13px;
+            padding: 0;
+            margin: 0;
+            padding-left: 10px;
+        }
+        .imgCustomize{
+            width: 55px;
+            height: 55px;
+            margin-top: 13%;
+            margin-left: 13%;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 ">
+        <div class="card">
+            <div class="card-body">
+                <div class="divTitle" style="padding: 0px">
+                    <p>Bản tin lớp ổn định</p>
+                </div>
+                <div class="mt-5 w-75 pr-5 float-left">
+                    <div class="divTitle">
+                        <p style="font-size: 14px">Bạn muốn chia sẻ điều gì?</p>
+                            <textarea id="textAreaContent" type="text" class="w-100" style="height: 70px;padding: 10px;border-radius: 5px;border-color: darkgray"></textarea>
+                            <button id="login-button" class="float-right" type="button" style="border-radius: 5px;background-color: #58C9F3;border: none;cursor: pointer;padding: 10px">Chia sẻ</button>
+                    </div>
+                </div>
+                <div class="mt-5 w-25 float-right" style="border-top: 4px solid #ddd;border-radius: 5px;padding: 10px;border-left: 1px solid #ddd;border-right: 1px solid #ddd;border-bottom: 1px solid #ddd">
+                    <p class="text-center" style="border-bottom: 1px solid #d9d9d9;padding-bottom: 10px">Danh sách học sinh trong lớp</p>
+                    <ul class="list-group">
+                        {% for userClass in userClassLst %}
+                            {% for userGroup in  userGroupLst%}
+                                {% for userGroup2 in  userGroupLst2%}
+                                    {% for userGroup3 in  userGroupLst3%}
+                                        {% for userGroup4 in  userGroupLst4%}
+                                            {% if userClass.user_id != userGroup.id and userClass.user_id != userGroup2.id and userClass.user_id != userGroup3.id and userClass.user_id != userGroup4.id  %}
+                                                <li class="list-group-item" style="margin: 0;padding: 10px 0px">
+                                                    <div class="float-left w-25">
+                                                        <img class="user-avatar rounded-circle imgCustomize" src="{% static 'Student/images/admin.jpg' %}" alt="User Avatar">
+                                                    </div>
+                                                    <div class="float-left w-75">
+                                                        <p class="pCustomize">{{ userClass.user.first_name}} {{ userClass.user.last_name }}</p>
+                                                        <p class="pCustomize">{{ userClass.number_phone }}</p>
+                                                        <p class="pCustomize">{{ userClass.user.email }}</p>
+                                                    </div>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /# column -->
+</div>
+{% endblock %}
